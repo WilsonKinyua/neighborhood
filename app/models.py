@@ -54,9 +54,6 @@ class NeighbourHood(models.Model):
 # user class model
 class User(models.Model):
     name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
     profile_pic = CloudinaryField('image')
