@@ -140,3 +140,41 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# post class model
+class Post(models.Model):
+    title = models.CharField(max_length=50)
+    content = models.TextField(blank=True, null=True)
+    image = CloudinaryField('image', blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    location=models.ForeignKey(Location, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # create post
+    def create_post(self):
+        self.save()
+
+    # delete post
+    def delete_post(self):
+        self.delete()
+
+    # update post
+    def update_post(self):
+        self.update()
+
+    # search post
+    @classmethod
+    def search_by_title(cls, search_term):
+        post = cls.objects.filter(title__icontains=search_term)
+        return post
+
+    # find post by id
+    @classmethod
+    def find_post(cls, id):
+        post = cls.objects.get(id=id)
+        return post
+
+    def __str__(self):
+        return self.title
