@@ -49,3 +49,18 @@ class NeighbourHood(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# user class model
+class User(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
