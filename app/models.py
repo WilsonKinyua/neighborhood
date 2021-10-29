@@ -6,6 +6,22 @@ from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 
 
+# category model
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
+    description = models.TextField(max_length=10000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+
 # location model
 class Location(models.Model):
     name = models.CharField(max_length=30)
@@ -53,6 +69,7 @@ class NeighbourHood(models.Model):
 
 # user class model
 class User(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
@@ -141,11 +158,12 @@ class Contact(models.Model):
 
 # post class model
 class Post(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=50)
     content = models.TextField(blank=True, null=True)
     image = CloudinaryField('image', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    location=models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
