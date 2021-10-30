@@ -67,8 +67,8 @@ class NeighbourHood(models.Model):
         return self.name
 
 
-# user class model
-class User(models.Model):
+# profile class model as named user
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
@@ -76,6 +76,9 @@ class User(models.Model):
     profile_pic = CloudinaryField('image')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save_profile(self):
+        self.save()
 
     def __str__(self):
         return self.name

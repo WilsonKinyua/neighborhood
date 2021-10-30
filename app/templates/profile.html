@@ -27,8 +27,8 @@
             <div class="col-md-3">
                 <div class="card">
 
-                    {% if profile.profile_photo %}
-                    <img src="{{profile.profile_photo.url}}" alt="" class="card-img-top">
+                    {% if profile.profile_pic %}
+                    <img src="{{profile.profile_pic.url}}" alt="" class="card-img-top">
                     {%else%}
                     <img src="https://st2.depositphotos.com/1104517/11965/v/600/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
                         class="card-img-top" alt="My profile picture">
@@ -39,20 +39,19 @@
                         </h4>
                         <p>{{ user.username }}</p>
                         <p>
-
-                            {% if profile.contact %}
-                            <small>{{ profile.contact }}</small>
+                            {% if profile.location %}
+                            <small class="badge rounded-pill bg-info text-white">{{ profile.location }}</small>
                             {% else %}
-                            <span class="badge rounded-pill bg-info text-white">No contact</span>
+                            <span class="badge rounded-pill bg-info text-white">No location</span>
                             {% endif %}
                         </p>
-                        <p>
+                        <!-- <p>
                             {% if profile.bio %}
                             <small>{{ profile.bio }}</small>
                             {% else %}
                             <span class="text-danger">No about me</span>
                             {% endif %}
-                        </p>
+                        </p> -->
                         <h6>Joined on: <span class="badge rounded-pill bg-secondary text-white">
                                 {{ user.date_joined|date }} </span></h6>
 
@@ -102,22 +101,47 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group mb-3">
+                                                            <label for="email">Neighbourhood</label>
+                                                            <select name="neighbourhood" id="neighbourhood"
+                                                                class="form-control" required>
+                                                                <option value="">Select Neighbourhood</option>
+                                                                {% for neighbourhood in neighbourhood %}
+                                                                <option value="{{ neighbourhood.name }}" >{{ neighbourhood.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+        
+                                                        <!-- <div class="form-group mb-3">
                                                             <label for="contact">Contact</label>
                                                             <input type="text" class="form-control" id="contact"
                                                                 name="contact" value="{{ profile.contact }}">
+                                                        </div> -->
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label for="email">Email</label>
+                                                            <input type="email" class="form-control" id="email"
+                                                                name="email" value="{{ user.email}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group mb-3">
+                                                            <label for="email">Location</label>
+                                                            <select name="location" id="location" class="form-control" required>
+                                                                <option value="">Select Location</option>
+                                                                {% for location in locations %}
+                                                                <option value="{{ location.name }}">{{ location.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group mb-3">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email" name="email"
-                                                        value="{{ user.email}}">
-                                                </div>
-                                                <div class="form-group mb-3">
+                                                
+                                                <!-- <div class="form-group mb-3">
                                                     <label for="bio">Bio</label>
                                                     <textarea name="bio" id="bio" cols="30" rows="10"
                                                         class="form-control">{{ profile.bio }}</textarea>
-                                                </div>
+                                                </div> -->
                                                 <div class="form-group mb-3">
                                                     <label for="profile_pic">Profile Picture</label>
                                                     <input type="file" class="form-control" id="profile_pic"
@@ -165,8 +189,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{% url 'save_project' %}" method="post"
-                                            enctype="multipart/form-data">
+                                        <form action="" method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <label for="title">Title</label>
