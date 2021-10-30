@@ -19,12 +19,12 @@
                 </div>
             </form>
             {% if user.is_authenticated %}
-            <a class="btn btn-light action-button" role="button" href="./profile.html">Profile </a>
+            <a class="btn btn-light action-button" role="button" href="{% url 'profile'%}">Profile </a>
             {% else %}
             <span class="nav-link text-dark">ARE YOU A MEMBER? <a href="/accounts/login"
                     class="text-primary"><strong>LOG IN</strong></a></span>
             {% endif %}
-            
+
         </div>
     </div>
 </nav>
