@@ -71,10 +71,11 @@ class NeighbourHood(models.Model):
         return self.name
 
 
-# profile class model as named user
+# profile class model also 'user' as they collide with django user model
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100, blank=True, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
     profile_pic = CloudinaryField('image')
@@ -132,7 +133,8 @@ class Contact(models.Model):
     email = models.EmailField(max_length=50, blank=True, null=True)
     phone = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE,default=1)
+    neighbourhood = models.ForeignKey(
+        NeighbourHood, on_delete=models.CASCADE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -172,7 +174,8 @@ class Post(models.Model):
     image = CloudinaryField('image', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE,default=1)
+    neighbourhood = models.ForeignKey(
+        NeighbourHood, on_delete=models.CASCADE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
