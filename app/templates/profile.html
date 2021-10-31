@@ -175,7 +175,7 @@
                         {{ danger }}
                     </div>
                     {% endif %}
-                    <!-- button to open add picture modal -->
+                    <!-- button to open add post modal -->
                     <div class="col-md-12">
                         <button type="button" class="btn btn-lg m-3" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
@@ -192,7 +192,8 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{% url 'save_post' %}" method="post" enctype="multipart/form-data">
+                                        <form action="{% url 'save_post' %}" method="post"
+                                            enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="form-group mb-3">
                                                 <label for="title">Title</label>
@@ -257,8 +258,11 @@
                                         <img src="{{ post.image.url }}" class="border-radius-around" alt="Image">
                                     </th>
                                     <td>{{ post.title }}</td>
-                                    <td><span class="badge rounded-pill bg-info text-white">{{ post.category }}</span></td>
-                                    <td><span class="badge rounded-pill bg-secondary text-white">{{ post.location }}</span></td>
+                                    <td><span class="badge rounded-pill bg-info text-white">{{ post.category }}</span>
+                                    </td>
+                                    <td><span class="badge rounded-pill bg-secondary text-white">
+                                            {{ post.location}}
+                                        </span></td>
                                     <!-- <td><a href="{{ image.url }}" target="_blank" class="text-primary"
                                             rel="noopener noreferrer">View
                                             Site</a></td> -->
@@ -285,23 +289,106 @@
                     </div>
                 </div>
 
-            </div>
-
-        </div>
-        <!-- <div class="col-md-12 mt-4 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h4 class="card-title">Comments</h4>
+                <!-- button to add business -->
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-lg m-3" data-bs-toggle="modal" data-bs-target="#addBusiness">
+                        <i class="fa fa-plus text-white"></i> Add Business
+                    </button>
+                    <!-- modal -->
+                    <div class="modal fade" id="addBusiness" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Post</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'create_business' %}" method="post"
+                                        enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group mb-3">
+                                            <label for="title">Business Name</label>
+                                            <input type="text" class="form-control" value="" name="name" required>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="title">Business Email</label>
+                                            <input type="email" class="form-control" value="" name="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="neighbourhood">Neighbourhood</label>
+                                            <select name="neighbourhood" id="neighbourhood" class="form-control"
+                                                required>
+                                                <option value="">--Select Option--</option>
+                                                {% for neighbourhood in neighbourhood %}
+                                                <option value="{{ neighbourhood.name }}">{{ neighbourhood.name }}
+                                                </option>
+                                                {% endfor %}`
+                                            </select>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="exampleFormControlTextarea1">Description</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
+                                                name="description"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn">Save</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+
+                <div class="col-md-12">
+                    <div class="card m-3">
+                        <table class="table table-responsive table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Neighbourhood</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for business in businesses %}
+                                <tr>
+                                    <td>{{ business.name}}</td>
+                                    <td>{{ business.email}}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-info text-white">
+                                            {{ business.neighbourhood}}
+                                        </span>
+                                    </td>
+                                    <!-- <td><a href="{{ image.url }}" target="_blank" class="text-primary"
+                                            rel="noopener noreferrer">View
+                                            Site</a></td> -->
+                                    <td>
+                                        <!-- view button -->
+                                        <a class="text-primary m-3" href="">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a class="text-danger" href="">
+                                            <i class="fa fa-trash-alt text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-danger">No Businesses Created!</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
+
             </div>
-        </div> -->
+
+        </div>
     </div>
     </div>
 </section>

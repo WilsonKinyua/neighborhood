@@ -24,7 +24,8 @@ def profile(request):
     locations = Location.objects.all()
     neighbourhood = NeighbourHood.objects.all()
     category = Category.objects.all()
-    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'categories': category})
+    businesses = Business.objects.all()
+    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'categories': category, 'businesses': businesses})
 
 
 # update profile
@@ -106,7 +107,7 @@ def create_post(request):
         location = request.POST["location"]
         # neighbourhood = request.POST["neighbourhood"]
 
-         # check if its an instance of category
+        # check if its an instance of category
         if category == "":
             category = None
         else:
@@ -118,7 +119,7 @@ def create_post(request):
         else:
             location = Location.objects.get(name=location)
 
-        # check if there is a post with image 
+        # check if there is a post with image
         if request.FILES:
             image = request.FILES["image"]
             image = cloudinary.uploader.upload(image)
@@ -147,38 +148,41 @@ def create_post(request):
 
             return redirect("/profile", {"success": "Post Created Successfully"})
 
-    #     image = request.FILES["image"]
+# create business
+@login_required(login_url="/accounts/login/")
+def create_business(request):
+    if request.method == "POST":
+        current_user = request.user
+        name = request.POST["name"]
+        email = request.POST["email"]
+        # phone = request.POST["phone"]
+        # address = request.POST["address"]
+        # location = request.POST["location"]
+        neighbourhood = request.POST["neighbourhood"]
 
+        # check if its an instance of location
+        # if location == "":
+        #     location = None
+        # else:
+        #     location = Location.objects.get(name=location)
 
-    #     # check if its an instance of location
-    #     if location == "":
-    #         location = None
-    #     else:
-    #         location = Location.objects.get(name=location)
+        # check if its an instance of neighbourhood
+        if neighbourhood == "":
+            neighbourhood = None
+        else:
+            neighbourhood = NeighbourHood.objects.get(name=neighbourhood)
 
-    #     # check if its an instance of neighbourhood
-    #     # if neighbourhood == "":
-    #     #     neighbourhood = None
-    #     # else:
-    #     #     neighbourhood = NeighbourHood.objects.get(name=neighbourhood)
+        business = Business(
+            user_id=current_user.id,
+            name=name,
+            email=email,
+            # phone=phone,
+            # address=address,
+            # location=location,
+            neighbourhood=neighbourhood,
+        )
+        business.create_business()
 
-       
-
-    #     # check if user has a profile
-    #     if Profile.objects.filter(user_id=current_user.id).exists():
-    #         profile = Profile.objects.get(user_id=current_user.id)
-    #         post = Post(
-    #             user_id=current_user.id,
-    #             profile_id=profile.id,
-    #             title=title,
-    #             post=post,
-    #             category=category,
-    #             location=location,
-    #             neighbourhood=neighbourhood,
-    #         )
-    #         post.save_post()
-    #         return redirect("/profile", {"success": "Post Created Successfully"})
-    #     else:
-    #         return redirect("/profile", {"danger": "Please Update Your Profile"})
-    # else:
-    #     return render(request, "profile.html", {"danger": "Post Creation Failed"})
+        return redirect("/profile", {"success": "Business Created Successfully"})
+    else:
+        return render(request, "profile.html", {"danger": "Business Creation Failed"})
