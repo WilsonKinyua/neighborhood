@@ -12,6 +12,8 @@ urlpatterns = [
     path("post/save/", views.create_post, name="save_post"), # save post
     path("business/create/", views.create_business, name="create_business"), # create business
     path("contact/create/", views.create_contact, name="create_contact"), # create contact
+    path("posts/", views.posts, name="posts"), # all posts
+    path("alerts/<str:alert>/", views.alerts, name="alerts"), # alerts
 ]
 
 

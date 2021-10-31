@@ -125,7 +125,8 @@ def create_post(request):
         if request.FILES:
             image = request.FILES["image"]
             # upload image to cloudinary and crop it to square
-            image = cloudinary.uploader.upload(image, crop="limit", width=800, height=600)
+            image = cloudinary.uploader.upload(
+                image, crop="limit", width=800, height=600)
             # image = cloudinary.uploader.upload(image)
             image_url = image["url"]
 
@@ -151,6 +152,9 @@ def create_post(request):
             post.create_post()
 
             return redirect("/profile", {"success": "Post Created Successfully"})
+
+
+
 
 # create business
 @login_required(login_url="/accounts/login/")
@@ -226,3 +230,10 @@ def create_contact(request):
         return redirect("/profile", {"success": "Contact Created Successfully"})
     else:
         return render(request, "profile.html", {"danger": "Contact Creation Failed"})
+
+
+# posts page
+def posts(request):
+    # get all posts and order by date
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "posts.html", {"posts": posts})
