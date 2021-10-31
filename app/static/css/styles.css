@@ -294,6 +294,10 @@ p.hero-subtitle {
   width: 40px;
 }
 
+.view-modal {
+  cursor: pointer;
+}
+
 /* responsiveness */
 @media (min-width: 768px) {
   .top-navigation {

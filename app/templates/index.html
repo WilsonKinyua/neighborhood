@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 15vw !important;
+        object-fit: cover;
+        /* Do not scale the image */
+    }
+
+    /* @media (max-width: 767px) {
+        .card-img-top {
+            height: auto !important;
+        }
+    }
+    */
+</style>
 <!-- carousel -->
 <div class="carousel slide" data-bs-ride="carousel" id="carousel-1">
     <div class="carousel-inner">
@@ -71,11 +86,11 @@
                     {% endif %}
 
                     <div class="card-body">
-                        <a href="project/1/index.html">
+                        <a data-bs-toggle="modal" data-bs-target="#postModal{{ post.id }}" class="view-modal">
                             <h6 class="fade-item mb-2">{{ post.title }}</h6>
                             <div class="d-flex justify-content-between location-date">
                                 <div>
-                                    <p class="text-uppercase">{{ post.location }}</p>
+                                    <p class="text-uppercase badge rounded-pill bg-warning text-dark text-capitalize">{{ post.location }}</p>
                                 </div>
                                 <div>
                                     <p>{{ post.created_at|date }}</p>
@@ -84,11 +99,8 @@
                             <div class="d-flex justify-content-between mt-2">
                                 <div class="d-flex justify-content-start">
                                     <div>
-                                        <!-- check if author image exists else display a placeholder -->
-
                                         <img src="https://st2.depositphotos.com/1104517/11965/v/600/depositphotos_119659092-stock-illustration-male-avatar-profile-picture-vector.jpg"
                                             class="poster-img" alt="Author">
-
                                     </div>
                                     <div>
                                         <p class="author mt-2 text-uppercase">
@@ -104,6 +116,25 @@
                                 </div>
                             </div>
                         </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- modal -->
+            <div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <!-- <div class="modal-header">
+                            <h5 class="modal-title" id="profileModalLabel">{{ post.title }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div> -->
+                        <div class="modal-body">
+                        <p>
+                            {{ post.content }}
+                        </p>
+                        </div>
+
                     </div>
                 </div>
             </div>
