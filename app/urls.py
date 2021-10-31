@@ -15,7 +15,8 @@ urlpatterns = [
     path("posts/", views.posts, name="posts"), # all posts
     path("alerts/", views.alerts, name="alerts"), # alerts
     path("business/", views.business, name="business"), # business
-    path("contacts/", views.contacts, name="contacts"), # business
+    path("contacts/", views.contacts, name="contacts"), # contacts
+    path("search/", views.search, name="search"), # search
 ]
 
 

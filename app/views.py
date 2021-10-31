@@ -281,3 +281,17 @@ def contacts(request):
     else:
         contacts = Contact.objects.all().order_by("-created_at")
         return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": None})
+
+
+# search 
+@login_required(login_url="/accounts/login/")
+def search(request):
+    if 'search_term' in request.GET and request.GET["search_term"]:
+        search_term = request.GET.get("search_term")
+        searched_posts = Post.objects.filter(title__icontains=search_term)
+        message = f"Search For: {search_term}"
+
+        return render(request, "search.html", {"message": message, "posts": searched_posts})
+    else:
+        message = "You haven't searched for any term"
+        return render(request, "search.html", {"message": message})
