@@ -14,6 +14,7 @@ urlpatterns = [
     path("contact/create/", views.create_contact, name="create_contact"), # create contact
     path("posts/", views.posts, name="posts"), # all posts
     path("alerts/", views.alerts, name="alerts"), # alerts
+    path("business/", views.business, name="business"), # business
 ]
 
 

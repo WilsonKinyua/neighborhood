@@ -154,8 +154,6 @@ def create_post(request):
             return redirect("/profile", {"success": "Post Created Successfully"})
 
 
-
-
 # create business
 @login_required(login_url="/accounts/login/")
 def create_business(request):
@@ -232,12 +230,15 @@ def create_contact(request):
         return render(request, "profile.html", {"danger": "Contact Creation Failed"})
 
 
+@login_required(login_url="/accounts/login/")
 # posts page
 def posts(request):
     # get all posts and order by date
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts.html", {"posts": posts})
 
+
+@login_required(login_url="/accounts/login/")
 # alerts page
 def alerts(request):
     # get the category that contains name "alerts"
@@ -245,3 +246,16 @@ def alerts(request):
     # get all posts that contains the word "alert" and order by date
     posts = Post.objects.filter(category=category).order_by("-created_at")
     return render(request, "alerts.html", {"posts": posts})
+
+
+@login_required(login_url="/accounts/login/")
+# business page
+def business(request):
+    # get current user
+    current_user = request.user
+    # get user neighbourhood
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    print(profile.neighbourhood)
+    # get all business where the neighbourhood is the same as the user neighbourhood
+    businesses = Business.objects.filter(neighbourhood=profile.neighbourhood).order_by("-created_at")
+    return render(request, "business.html", {"businesses": businesses, "neighbourhood": profile.neighbourhood})
