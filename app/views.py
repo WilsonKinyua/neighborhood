@@ -7,16 +7,53 @@ import cloudinary.uploader
 import cloudinary.api
 
 
+# function to check if user has updated their profile
+# def check_profile(request):
+#     current_user = request.user
+#     # get current user neighbourhood
+#     profile = Profile.objects.filter(user_id=current_user.id).first()
+#     # check if user has neighbourhood
+#     if profile is None:
+#         profile = Profile.objects.filter(
+#             user_id=current_user.id).first()  # get profile
+#         posts = Post.objects.filter(user_id=current_user.id)
+#         # get all locations
+#         locations = Location.objects.all()
+#         neighbourhood = NeighbourHood.objects.all()
+#         category = Category.objects.all()
+#         businesses = Business.objects.filter(user_id=current_user.id)
+#         contacts = Contact.objects.filter(user_id=current_user.id)
+#         # redirect to profile with error message
+#         return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+#     else:
+#         neighbourhood = profile.neighbourhood
+
+
 # index view
 @login_required(login_url='/accounts/login/')
 def index(request):
     # get current user
     current_user = request.user
-    # get user neighbourhood
+    # get current user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    # check if user has profile
-    posts = Post.objects.all()
-    return render(request, 'index.html', {'posts': posts})
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        posts = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = NeighbourHood.objects.all()
+        category = Category.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
+        # check if user has profile
+        posts = Post.objects.all()
+        return render(request, 'index.html', {'posts': posts})
 
 
 # profile view
@@ -297,6 +334,24 @@ def create_contact(request):
 @login_required(login_url="/accounts/login/")
 # posts page
 def posts(request):
+    current_user = request.user
+    # get current user neighbourhood
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        posts = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = NeighbourHood.objects.all()
+        category = Category.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
     # get all posts and order by date
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts.html", {"posts": posts})
@@ -305,6 +360,24 @@ def posts(request):
 @login_required(login_url="/accounts/login/")
 # alerts page
 def alerts(request):
+    current_user = request.user
+    # get current user neighbourhood
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        posts = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = NeighbourHood.objects.all()
+        category = Category.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
     # get the category that contains name "alerts"
     category = Category.objects.get(name="alerts")
     # get all posts that contains the word "alert" and order by date
@@ -315,36 +388,55 @@ def alerts(request):
 # business page
 @login_required(login_url="/accounts/login/")
 def business(request):
-    # get current user
     current_user = request.user
-    # get user neighbourhood
+    # get current user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    # check if user has profile
-    if profile:
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        posts = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = NeighbourHood.objects.all()
+        category = Category.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
         # get all businesses in the user neighbourhood
         businesses = Business.objects.filter(
             neighbourhood=profile.neighbourhood)
         return render(request, "business.html", {"businesses": businesses})
-    else:
-        return render(request, "business.html", {"businesses": None})
 
 
 # contact page
 @login_required(login_url="/accounts/login/")
 def contacts(request):
-    # get current user
     current_user = request.user
-    # get user neighbourhood
+    # get current user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    # check if user has profile
-    if profile:
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        posts = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = NeighbourHood.objects.all()
+        category = Category.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
         # get all contacts where the neighbourhood is the same as the user neighbourhood
         contacts = Contact.objects.filter(
             neighbourhood=profile.neighbourhood).order_by("-created_at")
         return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": profile.neighbourhood})
-    else:
-        contacts = Contact.objects.all().order_by("-created_at")
-        return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": None})
 
 
 # search
