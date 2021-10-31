@@ -237,3 +237,11 @@ def posts(request):
     # get all posts and order by date
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts.html", {"posts": posts})
+
+# alerts page
+def alerts(request):
+    # get the category that contains name "alerts"
+    category = Category.objects.get(name="alerts")
+    # get all posts that contains the word "alert" and order by date
+    posts = Post.objects.filter(category=category).order_by("-created_at")
+    return render(request, "alerts.html", {"posts": posts})
