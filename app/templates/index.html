@@ -90,7 +90,9 @@
                             <h6 class="fade-item mb-2">{{ post.title }}</h6>
                             <div class="d-flex justify-content-between location-date">
                                 <div>
-                                    <p class="text-uppercase badge rounded-pill bg-warning text-dark text-capitalize">{{ post.location }}</p>
+                                    <p class="text-uppercase badge rounded-pill bg-warning text-dark text-capitalize">
+                                        {{post.location }}
+                                    </p>
                                 </div>
                                 <div>
                                     <p>{{ post.created_at|date }}</p>
@@ -121,8 +123,8 @@
             </div>
 
             <!-- modal -->
-            <div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="profileModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <!-- <div class="modal-header">
@@ -130,11 +132,19 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div> -->
                         <div class="modal-body">
-                        <p>
-                            {{ post.content }}
-                        </p>
+                            <p>
+                                {{ post.content }}
+                            </p>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-md-12 col-lg-12">
+                <div class="card mb-4 post-card">
+                    <div class="card-body text-center">
+                        <h4 class="fade-item mb-2 text-danger">No Posts within Your Area!!!</h4>
                     </div>
                 </div>
             </div>
