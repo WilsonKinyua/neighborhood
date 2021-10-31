@@ -10,7 +10,8 @@ import cloudinary.api
 # index view
 @login_required(login_url='/accounts/login/')
 def index(request):
-    return render(request, 'index.html')
+    posts = Post.objects.all()
+    return render(request, 'index.html', {'posts': posts})
 
 
 # profile view
@@ -123,7 +124,9 @@ def create_post(request):
         # check if there is a post with image
         if request.FILES:
             image = request.FILES["image"]
-            image = cloudinary.uploader.upload(image)
+            # upload image to cloudinary and crop it to square
+            image = cloudinary.uploader.upload(image, crop="limit", width=800, height=600)
+            # image = cloudinary.uploader.upload(image)
             image_url = image["url"]
 
             post = Post(
@@ -145,7 +148,7 @@ def create_post(request):
                 category=category,
                 location=location,
             )
-            post.save_post()
+            post.create_post()
 
             return redirect("/profile", {"success": "Post Created Successfully"})
 

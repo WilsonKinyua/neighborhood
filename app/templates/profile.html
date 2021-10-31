@@ -256,7 +256,12 @@
                                 {% for post in posts %}
                                 <tr>
                                     <th scope="row">
+                                        {% if post.image %}
                                         <img src="{{ post.image.url }}" class="border-radius-around" alt="Image">
+                                        {% else %}
+                                        <img src="https://www.freeiconspng.com/uploads/no-image-icon-11.PNG" class="border-radius-around" alt="Image">
+                                        {% endif %}
+
                                     </th>
                                     <td>{{ post.title }}</td>
                                     <td><span class="badge rounded-pill bg-info text-white">{{ post.category }}</span>
@@ -386,8 +391,8 @@
                     </div>
                 </div>
 
-                 <!-- button to add contacts -->
-                 <div class="col-md-12">
+                <!-- button to add contacts -->
+                <div class="col-md-12">
                     <button type="button" class="btn btn-lg m-3" data-bs-toggle="modal" data-bs-target="#addContact">
                         <i class="fa fa-plus text-white"></i> Add Contact
                     </button>
