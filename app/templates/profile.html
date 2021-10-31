@@ -167,15 +167,19 @@
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    {% if success %}
+                    <!-- {% if success %}
                     <div class="alert alert-success" role="alert">
                         {{ success }}
                     </div>
                     {% elif danger %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ danger }}
-                    </div>
+                    
+                    {% endif %} -->
+                    {% if danger %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ danger }}
+                        </div>
                     {% endif %}
+                  
                     <!-- button to open add post modal -->
                     <div class="col-md-12">
                         <button type="button" class="btn btn-lg m-3" data-bs-toggle="modal"

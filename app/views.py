@@ -10,6 +10,11 @@ import cloudinary.api
 # index view
 @login_required(login_url='/accounts/login/')
 def index(request):
+    # get current user
+    current_user = request.user
+    # get user neighbourhood
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    # check if user has profile
     posts = Post.objects.all()
     return render(request, 'index.html', {'posts': posts})
 
@@ -109,6 +114,24 @@ def create_post(request):
         location = request.POST["location"]
         # neighbourhood = request.POST["neighbourhood"]
 
+        # get current user neighbourhood
+        profile = Profile.objects.filter(user_id=current_user.id).first()
+        # check if user has neighbourhood
+        if profile is None:
+            profile = Profile.objects.filter(
+                user_id=current_user.id).first()  # get profile
+            posts = Post.objects.filter(user_id=current_user.id)
+            # get all locations
+            locations = Location.objects.all()
+            neighbourhood = NeighbourHood.objects.all()
+            category = Category.objects.all()
+            businesses = Business.objects.filter(user_id=current_user.id)
+            contacts = Contact.objects.filter(user_id=current_user.id)
+            # redirect to profile with error message
+            return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+        else:
+            neighbourhood = profile.neighbourhood
+
         # check if its an instance of category
         if category == "":
             category = None
@@ -137,6 +160,7 @@ def create_post(request):
                 image=image_url,
                 category=category,
                 location=location,
+                neighbourhood=neighbourhood,
             )
             post.create_post()
 
@@ -148,10 +172,14 @@ def create_post(request):
                 content=content,
                 category=category,
                 location=location,
+                neighbourhood=neighbourhood,
             )
             post.create_post()
 
             return redirect("/profile", {"success": "Post Created Successfully"})
+
+    else:
+        return render(request, "profile.html", {"danger": "Post Creation Failed"})
 
 
 # create business
@@ -171,6 +199,24 @@ def create_business(request):
         #     location = None
         # else:
         #     location = Location.objects.get(name=location)
+
+        # get current user neighbourhood
+        profile = Profile.objects.filter(user_id=current_user.id).first()
+        # check if user has neighbourhood
+        if profile is None:
+            profile = Profile.objects.filter(
+                user_id=current_user.id).first()  # get profile
+            posts = Post.objects.filter(user_id=current_user.id)
+            # get all locations
+            locations = Location.objects.all()
+            neighbourhood = NeighbourHood.objects.all()
+            category = Category.objects.all()
+            businesses = Business.objects.filter(user_id=current_user.id)
+            contacts = Contact.objects.filter(user_id=current_user.id)
+            # redirect to profile with error message
+            return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+        else:
+            neighbourhood = profile.neighbourhood
 
         # check if its an instance of neighbourhood
         if neighbourhood == "":
@@ -209,6 +255,24 @@ def create_contact(request):
         #     location = None
         # else:
         #     location = Location.objects.get(name=location)
+
+        # get current user neighbourhood
+        profile = Profile.objects.filter(user_id=current_user.id).first()
+        # check if user has neighbourhood
+        if profile is None:
+            profile = Profile.objects.filter(
+                user_id=current_user.id).first()  # get profile
+            posts = Post.objects.filter(user_id=current_user.id)
+            # get all locations
+            locations = Location.objects.all()
+            neighbourhood = NeighbourHood.objects.all()
+            category = Category.objects.all()
+            businesses = Business.objects.filter(user_id=current_user.id)
+            contacts = Contact.objects.filter(user_id=current_user.id)
+            # redirect to profile with error message
+            return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "categories": category, "businesses": businesses, "contacts": contacts, "posts": posts})
+        else:
+            neighbourhood = profile.neighbourhood
 
         # check if its an instance of neighbourhood
         if neighbourhood == "":
@@ -283,7 +347,7 @@ def contacts(request):
         return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": None})
 
 
-# search 
+# search
 @login_required(login_url="/accounts/login/")
 def search(request):
     if 'search_term' in request.GET and request.GET["search_term"]:
