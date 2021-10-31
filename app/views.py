@@ -24,8 +24,9 @@ def profile(request):
     locations = Location.objects.all()
     neighbourhood = NeighbourHood.objects.all()
     category = Category.objects.all()
-    businesses = Business.objects.all()
-    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'categories': category, 'businesses': businesses})
+    businesses = Business.objects.filter(user_id=current_user.id)
+    contacts = Contact.objects.filter(user_id=current_user.id)
+    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'categories': category, 'businesses': businesses, 'contacts': contacts})
 
 
 # update profile
@@ -186,3 +187,39 @@ def create_business(request):
         return redirect("/profile", {"success": "Business Created Successfully"})
     else:
         return render(request, "profile.html", {"danger": "Business Creation Failed"})
+
+
+# create contact
+@login_required(login_url="/accounts/login/")
+def create_contact(request):
+    if request.method == "POST":
+        current_user = request.user
+        name = request.POST["name"]
+        email = request.POST["email"]
+        phone = request.POST["phone"]
+        neighbourhood = request.POST["neighbourhood"]
+
+        # # check if its an instance of location
+        # if location == "":
+        #     location = None
+        # else:
+        #     location = Location.objects.get(name=location)
+
+        # check if its an instance of neighbourhood
+        if neighbourhood == "":
+            neighbourhood = None
+        else:
+            neighbourhood = NeighbourHood.objects.get(name=neighbourhood)
+
+        contact = Contact(
+            user_id=current_user.id,
+            name=name,
+            email=email,
+            phone=phone,
+            neighbourhood=neighbourhood,
+        )
+        contact.create_contact()
+
+        return redirect("/profile", {"success": "Contact Created Successfully"})
+    else:
+        return render(request, "profile.html", {"danger": "Contact Creation Failed"})
