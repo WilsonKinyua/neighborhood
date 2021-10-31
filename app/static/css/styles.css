@@ -288,6 +288,12 @@ p.hero-subtitle {
   color: #032c31;
 }
 
+.border-radius-around {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
 /* responsiveness */
 @media (min-width: 768px) {
   .top-navigation {

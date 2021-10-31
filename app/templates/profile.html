@@ -106,11 +106,12 @@
                                                                 class="form-control" required>
                                                                 <option value="">Select Neighbourhood</option>
                                                                 {% for neighbourhood in neighbourhood %}
-                                                                <option value="{{ neighbourhood.name }}" >{{ neighbourhood.name }}</option>
+                                                                <option value="{{ neighbourhood.name }}">{{
+                                                                    neighbourhood.name }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
-        
+
                                                         <!-- <div class="form-group mb-3">
                                                             <label for="contact">Contact</label>
                                                             <input type="text" class="form-control" id="contact"
@@ -127,16 +128,18 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group mb-3">
                                                             <label for="email">Location</label>
-                                                            <select name="location" id="location" class="form-control" required>
+                                                            <select name="location" id="location" class="form-control"
+                                                                required>
                                                                 <option value="">Select Location</option>
                                                                 {% for location in locations %}
-                                                                <option value="{{ location.name }}">{{ location.name }}</option>
+                                                                <option value="{{ location.name }}">{{ location.name }}
+                                                                </option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <!-- <div class="form-group mb-3">
                                                     <label for="bio">Bio</label>
                                                     <textarea name="bio" id="bio" cols="30" rows="10"
@@ -176,7 +179,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn btn-lg m-3" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
-                            <i class="fa fa-plus text-white"></i> Add Project
+                            <i class="fa fa-plus text-white"></i> Add Post
                         </button>
                         <!-- modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -184,35 +187,46 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add Project</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Post</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="" method="post" enctype="multipart/form-data">
+                                        <form action="{% url 'save_post' %}" method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
-                                            <div class="form-group">
+                                            <div class="form-group mb-3">
                                                 <label for="title">Title</label>
                                                 <input type="text" class="form-control" value="" name="title" required>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="title">Location</label>
-                                                <input type="text" class="form-control" value="" name="location"
-                                                    required>
+                                            <div class="mb-3">
+                                                <label for="category">Category</label>
+                                                <select name="category" id="category" class="form-control" required>
+                                                    <option value="">--Select Option--</option>
+                                                    {% for category in categories %}
+                                                    <option value="{{ category.name }}">{{ category.name }}</option>
+                                                    {% endfor %}`
+                                                </select>
                                             </div>
-                                            <div class="form-group mt-3">
-                                                <label for="url">URL Link</label>
-                                                <input type="url" class="form-control" value="" name="url" required>
+                                            <div class="form-group">
+                                                <div class="form-group mb-3">
+                                                    <label for="email">Location</label>
+                                                    <select name="location" id="location" class="form-control" required>
+                                                        <option value="">Select Location</option>
+                                                        {% for location in locations %}
+                                                        <option value="{{ location.name }}">{{ location.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="form-group mt-3">
                                                 <label for="exampleFormControlFile1">Photo</label>
                                                 <input type="file" class="form-control" id="exampleFormControlFile1"
-                                                    name="image" required>
+                                                    name="image">
                                             </div>
                                             <div class="form-group mt-3">
-                                                <label for="exampleFormControlTextarea1">Description</label>
+                                                <label for="exampleFormControlTextarea1">Content</label>
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
-                                                    name="description" required></textarea>
+                                                    name="content" required></textarea>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn">Save</button>
@@ -231,20 +245,23 @@
                                 <tr>
                                     <th scope="col">Photo</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">View</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Location</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for image in images %}
+                                {% for post in posts %}
                                 <tr>
                                     <th scope="row">
-                                        <img src="{{ image.image.url }}" class="border-radius-around" alt="Image">
+                                        <img src="{{ post.image.url }}" class="border-radius-around" alt="Image">
                                     </th>
-                                    <td>{{ image.title }}</td>
-                                    <td><a href="{{ image.url }}" target="_blank" class="text-primary"
+                                    <td>{{ post.title }}</td>
+                                    <td><span class="badge rounded-pill bg-info text-white">{{ post.category }}</span></td>
+                                    <td><span class="badge rounded-pill bg-secondary text-white">{{ post.location }}</span></td>
+                                    <!-- <td><a href="{{ image.url }}" target="_blank" class="text-primary"
                                             rel="noopener noreferrer">View
-                                            Site</a></td>
+                                            Site</a></td> -->
                                     <td>
                                         <!-- view button -->
                                         <a class="text-primary m-3" href="">
@@ -253,7 +270,7 @@
                                         <!-- <a class="text-primary m-3" href="">
                                             <i class="fa fa-pen"></i>
                                         </a> -->
-                                        <a class="text-danger" href="{% url 'delete_project' image.id %}">
+                                        <a class="text-danger" href="">
                                             <i class="fa fa-trash-alt text-danger"></i>
                                         </a>
                                     </td>
