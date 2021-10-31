@@ -248,27 +248,36 @@ def alerts(request):
     return render(request, "alerts.html", {"posts": posts})
 
 
-@login_required(login_url="/accounts/login/")
 # business page
+@login_required(login_url="/accounts/login/")
 def business(request):
     # get current user
     current_user = request.user
     # get user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    print(profile.neighbourhood)
-    # get all business where the neighbourhood is the same as the user neighbourhood
-    businesses = Business.objects.filter(neighbourhood=profile.neighbourhood).order_by("-created_at")
-    return render(request, "business.html", {"businesses": businesses, "neighbourhood": profile.neighbourhood})
+    # check if user has profile
+    if profile:
+        # get all businesses in the user neighbourhood
+        businesses = Business.objects.filter(
+            neighbourhood=profile.neighbourhood)
+        return render(request, "business.html", {"businesses": businesses})
+    else:
+        return render(request, "business.html", {"businesses": None})
 
 
+# contact page
 @login_required(login_url="/accounts/login/")
-# business page
 def contacts(request):
     # get current user
     current_user = request.user
     # get user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    print(profile.neighbourhood)
-    # get all business where the neighbourhood is the same as the user neighbourhood
-    contacts = Contact.objects.filter(neighbourhood=profile.neighbourhood).order_by("-created_at")
-    return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": profile.neighbourhood})
+    # check if user has profile
+    if profile:
+        # get all contacts where the neighbourhood is the same as the user neighbourhood
+        contacts = Contact.objects.filter(
+            neighbourhood=profile.neighbourhood).order_by("-created_at")
+        return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": profile.neighbourhood})
+    else:
+        contacts = Contact.objects.all().order_by("-created_at")
+        return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": None})
